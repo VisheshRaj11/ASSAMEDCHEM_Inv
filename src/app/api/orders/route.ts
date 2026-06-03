@@ -31,11 +31,16 @@ export async function POST(req: Request) {
     const baseQty = toBaseQty(requestedQty, requestedUnit as DisplayUnit)
     const calculatedPrice = baseQty.mul(new Decimal(product.pricePerBaseUnit.toString()))
 
+    const userId = session.user.id;
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     // Create the order and order item in a transaction
     const order = await prisma.$transaction(async (tx) => {
       const newOrder = await tx.order.create({
         data: {
-          userId: session.user.id!,
+          userId: userId,
           totalAmount: calculatedPrice,
           items: {
             create: {

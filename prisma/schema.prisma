@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  SELLER
+}
+
+enum BaseUnit {
+  GRAM
+  MILLILITER
+  ITEM
+}
+
+enum DisplayUnit {
+  G
+  KG
+  ML
+  L
+  UNIT
+}
+
+model User {
+  id       String  @id @default(uuid())
+  name     String
+  email    String  @unique
+  password String
+  role     Role    @default(SELLER)
+  orders   Order[]
+}
+
+model Product {
+  id                   String      @id @default(uuid())
+  name                 String
+  sku                  String      @unique
+  description          String?
+  baseUnit             BaseUnit
+  pricePerBaseUnit     Decimal     @db.Decimal(16, 4) // INR
+  inventoryBaseQty     Decimal     @db.Decimal(16, 4) // Quantity in base unit
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+  orderItems           OrderItem[]
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  user        User        @relation(fields: [userId], references: [id])
+  userId      String
+  status      String      @default("PENDING") // PENDING, CONFIRMED
+  totalAmount Decimal     @db.Decimal(16, 4) // Total in INR
+  createdAt   DateTime    @default(now())
+  items       OrderItem[]
+}
+
+model OrderItem {
+  id                    String      @id @default(uuid())
+  order                 Order       @relation(fields: [orderId], references: [id])
+  orderId               String
+  product               Product     @relation(fields: [productId], references: [id])
+  productId             String
+  requestedQty          Decimal     @db.Decimal(16, 4) // E.g. 5
+  requestedUnit         DisplayUnit // E.g. KG
+  baseQty               Decimal     @db.Decimal(16, 4) // E.g. 5000
+  pricePerBaseUnitAtTime Decimal     @db.Decimal(16, 4) // Snapshot of price
+  calculatedPrice       Decimal     @db.Decimal(16, 4) // baseQty * pricePerBaseUnitAtTime
+}

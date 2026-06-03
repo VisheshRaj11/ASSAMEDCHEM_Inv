@@ -37,13 +37,12 @@ export function AddProductDialog() {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="h-9 bg-zinc-900 text-zinc-50 hover:bg-zinc-800 transition-all shadow-sm">
-          <Plus className="mr-2 h-4 w-4" />
-          Add Product
-        </Button>
-      </DialogTrigger>
+    <>
+      <Button onClick={() => setOpen(true)} className="h-9 bg-zinc-900 text-zinc-50 hover:bg-zinc-800 transition-all shadow-sm">
+        <Plus className="mr-2 h-4 w-4" />
+        Add Product
+      </Button>
+      <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px] rounded-xl border border-zinc-200 bg-white p-0 shadow-lg overflow-hidden">
         <div className="p-6 pb-4 border-b border-zinc-100">
           <DialogHeader>
@@ -98,5 +97,6 @@ export function AddProductDialog() {
         </form>
       </DialogContent>
     </Dialog>
+    </>
   )
 }

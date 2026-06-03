@@ -70,6 +70,45 @@ async function main() {
     },
   })
 
+  await prisma.product.upsert({
+    where: { sku: 'CHEM-003' },
+    update: {},
+    create: {
+      name: 'Sulfuric Acid 98%',
+      sku: 'CHEM-003',
+      description: 'Concentrated H2SO4',
+      baseUnit: BaseUnit.MILLILITER,
+      pricePerBaseUnit: 0.25,
+      inventoryBaseQty: 50000,
+    },
+  })
+
+  await prisma.product.upsert({
+    where: { sku: 'CHEM-004' },
+    update: {},
+    create: {
+      name: 'Potassium Permanganate',
+      sku: 'CHEM-004',
+      description: 'KMnO4 dark purple crystals',
+      baseUnit: BaseUnit.GRAM,
+      pricePerBaseUnit: 1.20,
+      inventoryBaseQty: 10000,
+    },
+  })
+
+  await prisma.product.upsert({
+    where: { sku: 'EQUIP-002' },
+    update: {},
+    create: {
+      name: 'Erlenmeyer Flask 250mL',
+      sku: 'EQUIP-002',
+      description: 'Conical flask for titrations',
+      baseUnit: BaseUnit.ITEM,
+      pricePerBaseUnit: 120.00,
+      inventoryBaseQty: 350,
+    },
+  })
+
   console.log('Seed completed successfully.')
 }
 

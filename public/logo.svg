@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="transparent" />
+  <!-- Left leg of A -->
+  <path d="M256 64 L128 448 L192 448 L256 256 Z" fill="#2563eb" />
+  <!-- Right leg of A -->
+  <path d="M256 64 L384 448 L320 448 L256 256 Z" fill="#1d4ed8" />
+  <!-- Crossbar -->
+  <path d="M176 320 Q 256 280 336 320" fill="none" stroke="#3b82f6" stroke-width="48" stroke-linecap="round" />
+  
+  <!-- Medical Cross -->
+  <g transform="translate(360, 100) scale(0.6)">
+    <rect x="40" y="0" width="40" height="120" fill="#0d9488" rx="8" />
+    <rect x="0" y="40" width="120" height="40" fill="#0d9488" rx="8" />
+  </g>
+</svg>

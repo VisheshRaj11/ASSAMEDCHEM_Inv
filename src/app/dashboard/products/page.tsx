@@ -18,40 +18,65 @@ export default async function AdminProductsPage() {
   })
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-8">
+      {/* Header Panel */}
+      <div className="flex justify-between items-center border-b border-zinc-100 pb-5">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Products</h1>
-          <p className="text-muted-foreground">Manage inventory and base prices.</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">Products</h1>
+          <p className="mt-1 text-sm text-zinc-500">Manage global system inventory values and base pricing.</p>
         </div>
       </div>
 
-      <div className="rounded-md border bg-card">
+      {/* Modern Minimalist Table Container */}
+      <div className="overflow-hidden rounded-xl border border-zinc-200/70 bg-white">
         <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>SKU</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Base Unit</TableHead>
-              <TableHead className="text-right">Price per Base Unit</TableHead>
-              <TableHead className="text-right">Inventory (Base Qty)</TableHead>
+          <TableHeader className="bg-zinc-50/70">
+            <TableRow className="hover:bg-transparent border-zinc-200/70">
+              <TableHead className="h-11 text-xs font-medium uppercase tracking-wider text-zinc-500">SKU</TableHead>
+              <TableHead className="h-11 text-xs font-medium uppercase tracking-wider text-zinc-500">Name</TableHead>
+              <TableHead className="h-11 text-xs font-medium uppercase tracking-wider text-zinc-500">Base Unit</TableHead>
+              <TableHead className="h-11 text-right text-xs font-medium uppercase tracking-wider text-zinc-500">Price per Base Unit</TableHead>
+              <TableHead className="h-11 text-right text-xs font-medium uppercase tracking-wider text-zinc-500">Inventory (Base Qty)</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {products.length === 0 && (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
-                  No products found.
+                <TableCell colSpan={5} className="text-center py-12 text-sm text-zinc-400 font-medium">
+                  No products found in the database.
                 </TableCell>
               </TableRow>
             )}
+            
             {products.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell className="font-medium"><Badge variant="outline">{product.sku}</Badge></TableCell>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>{product.baseUnit}</TableCell>
-                <TableCell className="text-right font-bold">₹{Number(product.pricePerBaseUnit).toFixed(2)}</TableCell>
-                <TableCell className="text-right">{Number(product.inventoryBaseQty).toFixed(0)}</TableCell>
+              <TableRow key={product.id} className="border-zinc-100 hover:bg-zinc-50/40 transition-colors">
+                {/* SKU Code Token */}
+                <TableCell className="py-4">
+                  <span className="inline-flex items-center rounded-md bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600 font-mono tracking-tight border border-zinc-200/20">
+                    {product.sku}
+                  </span>
+                </TableCell>
+                
+                {/* Product Name */}
+                <TableCell className="py-4 text-sm font-medium text-zinc-900">
+                  {product.name}
+                </TableCell>
+                
+                {/* Base Unit Spec */}
+                <TableCell className="py-4 text-sm text-zinc-600">
+                  {product.baseUnit}
+                </TableCell>
+                
+                {/* Unit Pricing */}
+                <TableCell className="py-4 text-right text-sm font-semibold text-zinc-900">
+                  ₹{Number(product.pricePerBaseUnit).toFixed(2)}
+                </TableCell>
+                
+                {/* Inventory Balances */}
+                <TableCell className="py-4 text-right text-sm font-medium text-zinc-600 font-mono">
+                  {Number(product.inventoryBaseQty).toFixed(0)}{" "}
+                  <span className="text-zinc-400 font-sans text-xs font-normal">{product.baseUnit}</span>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

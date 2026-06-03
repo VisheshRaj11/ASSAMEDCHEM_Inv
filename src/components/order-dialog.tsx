@@ -74,57 +74,96 @@ export function OrderDialog({ product }: { product: SafeProduct }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full">Order Now</Button>
+        <Button className="w-full h-9 bg-zinc-900 text-zinc-50 text-sm font-medium hover:bg-zinc-800 active:scale-[0.99] transition-all shadow-sm rounded-md">
+          Order Now
+        </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Place Order</DialogTitle>
-          <DialogDescription>
-            {product.name} ({product.sku})
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="qty" className="text-right">
-              Quantity
+      
+      <DialogContent className="sm:max-w-[400px] gap-0 rounded-xl border border-zinc-200 bg-white p-0 shadow-lg overflow-hidden">
+        {/* Modal Header Area */}
+        <div className="p-6 pb-4 border-b border-zinc-100">
+          <DialogHeader className="space-y-1">
+            <DialogTitle className="text-lg font-semibold tracking-tight text-zinc-900">
+              Place Order
+            </DialogTitle>
+            <DialogDescription className="flex items-center gap-2 text-sm text-zinc-500">
+              <span className="font-medium text-zinc-800">{product.name}</span>
+              <span className="inline-flex items-center rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium text-zinc-500 font-mono tracking-tight">
+                {product.sku}
+              </span>
+            </DialogDescription>
+          </DialogHeader>
+        </div>
+
+        {/* Content Body Layout */}
+        <div className="p-6 space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="qty" className="text-xs font-medium text-zinc-500 tracking-wide">
+              Requested Quantity
             </Label>
-            <Input
-              id="qty"
-              type="number"
-              min="0.1"
-              step="any"
-              value={qty}
-              onChange={(e) => setQty(e.target.value)}
-              className="col-span-2"
-            />
-            <Select value={unit} onValueChange={(v) => setUnit(v as DisplayUnit)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Unit" />
-              </SelectTrigger>
-              <SelectContent>
-                {displayUnits.map(u => (
-                  <SelectItem key={u} value={u}>{unitLabels[u]}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="p-4 bg-muted/50 rounded-lg space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Rate:</span>
-              <span>₹{pricePerDisplay.toFixed(2)} / {unitLabels[unit]}</span>
+            <div className="flex gap-2">
+              <Input
+                id="qty"
+                type="number"
+                min="0.1"
+                step="any"
+                value={qty}
+                onChange={(e) => setQty(e.target.value)}
+                className="h-9 flex-1 border-zinc-200 bg-zinc-50/30 text-sm shadow-none focus-visible:bg-white focus-visible:ring-1 focus-visible:ring-zinc-950/20 focus-visible:border-zinc-300 transition-colors"
+              />
+              <div className="w-[110px]">
+                <Select value={unit} onValueChange={(v) => setUnit(v as DisplayUnit)}>
+                  <SelectTrigger className="h-9 border-zinc-200 bg-zinc-50/30 shadow-none focus:ring-1 focus:ring-zinc-950/20 focus:border-zinc-300 transition-colors">
+                    <SelectValue placeholder="Unit" />
+                  </SelectTrigger>
+                  <SelectContent className="border-zinc-200 shadow-md">
+                    {displayUnits.map(u => (
+                      <SelectItem key={u} value={u} className="text-sm focus:bg-zinc-50 focus:text-zinc-900">
+                        {unitLabels[u]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="flex justify-between font-bold text-lg">
-              <span>Total Price:</span>
-              <span className="text-primary">₹{totalPrice.toFixed(2)}</span>
+          </div>
+
+          {/* Clean Dynamic Ledger Summary Box */}
+          <div className="rounded-xl border border-zinc-200/60 bg-zinc-50/40 p-4 space-y-2.5">
+            <div className="flex justify-between items-center text-xs">
+              <span className="text-zinc-400">Unit Exchange Rate</span>
+              <span className="font-medium text-zinc-600">
+                ₹{pricePerDisplay.toFixed(2)} <span className="text-zinc-400 font-normal">/ {unitLabels[unit]}</span>
+              </span>
+            </div>
+            <div className="border-t border-zinc-200/60 my-1" />
+            <div className="flex justify-between items-baseline">
+              <span className="text-xs font-medium text-zinc-500">Total Price</span>
+              <span className="text-xl font-semibold tracking-tight text-zinc-900">
+                ₹{totalPrice.toFixed(2)}
+              </span>
             </div>
           </div>
         </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)} disabled={loading}>Cancel</Button>
-          <Button onClick={handlePlaceOrder} disabled={loading}>
+
+        {/* Modal Actions Footer Area */}
+        <div className="bg-zinc-50 px-6 py-4 border-t border-zinc-100 flex justify-end gap-2.5">
+          <Button 
+            variant="outline" 
+            onClick={() => setOpen(false)} 
+            disabled={loading}
+            className="h-9 border-zinc-200 bg-white text-zinc-700 shadow-none hover:bg-zinc-50 hover:text-zinc-900"
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={handlePlaceOrder} 
+            disabled={loading}
+            className="h-9 bg-zinc-900 text-zinc-50 hover:bg-zinc-800 active:scale-[0.99] transition-all shadow-none px-4"
+          >
             {loading ? "Placing..." : "Confirm Order"}
           </Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   )

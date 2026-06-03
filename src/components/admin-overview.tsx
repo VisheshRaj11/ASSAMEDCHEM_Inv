@@ -1,13 +1,28 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Package, ShoppingCart } from "lucide-react"
+import { AddProductDialog } from "./add-product-dialog"
+import { DeleteProductButton } from "./delete-product-button"
+import { BaseUnit } from "@prisma/client"
 
-export function AdminOverview({ productsCount, ordersCount }: { productsCount: number, ordersCount: number }) {
+type SafeProduct = {
+  id: string
+  name: string
+  sku: string
+  baseUnit: BaseUnit
+  pricePerBaseUnit: string
+  inventoryBaseQty: string
+}
+
+export function AdminOverview({ productsCount, ordersCount, products }: { productsCount: number, ordersCount: number, products?: SafeProduct[] }) {
   return (
     <div className="space-y-8">
       {/* Header Panel */}
-      <div className="border-b border-zinc-100 pb-5">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">Admin Overview</h1>
-        <p className="mt-1 text-sm text-zinc-500">Track structural inventory status balances and operational orders.</p>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-100 pb-5">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">Admin Overview</h1>
+          <p className="mt-1 text-sm text-zinc-500">Track structural inventory status balances and operational orders.</p>
+        </div>
+        <AddProductDialog />
       </div>
       
       {/* Stat Metric Grid */}
@@ -48,6 +63,36 @@ export function AdminOverview({ productsCount, ordersCount }: { productsCount: n
           </CardContent>
         </Card>
       </div>
+
+      {/* Products List */}
+      {products && products.length > 0 && (
+        <div className="space-y-4">
+          <h2 className="text-lg font-medium text-zinc-900">Product Catalog</h2>
+          <div className="rounded-xl border border-zinc-200 bg-white overflow-hidden">
+            <div className="grid grid-cols-5 bg-zinc-50 p-4 text-xs font-medium text-zinc-500 border-b border-zinc-200">
+              <div className="col-span-2">Name & SKU</div>
+              <div>Base Unit</div>
+              <div>Price</div>
+              <div className="text-right">Actions</div>
+            </div>
+            <div className="divide-y divide-zinc-100">
+              {products.map(product => (
+                <div key={product.id} className="grid grid-cols-5 items-center p-4 text-sm hover:bg-zinc-50/50 transition-colors">
+                  <div className="col-span-2">
+                    <div className="font-medium text-zinc-900">{product.name}</div>
+                    <div className="text-xs text-zinc-500 font-mono mt-0.5">{product.sku}</div>
+                  </div>
+                  <div className="text-zinc-600">{product.baseUnit}</div>
+                  <div className="text-zinc-600">₹{parseFloat(product.pricePerBaseUnit).toFixed(2)}</div>
+                  <div className="text-right">
+                    <DeleteProductButton productId={product.id} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

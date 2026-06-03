@@ -18,8 +18,17 @@ export default async function DashboardPage() {
   if (role === "ADMIN") {
     const productsCount = await prisma.product.count()
     const ordersCount = await prisma.order.count()
+    const products = await prisma.product.findMany({
+      orderBy: { createdAt: "desc" }
+    })
     
-    return <AdminOverview productsCount={productsCount} ordersCount={ordersCount} />
+    const safeProducts = products.map(p => ({
+      ...p,
+      pricePerBaseUnit: p.pricePerBaseUnit.toString(),
+      inventoryBaseQty: p.inventoryBaseQty.toString(),
+    }))
+    
+    return <AdminOverview productsCount={productsCount} ordersCount={ordersCount} products={safeProducts} />
   } else {
     // Fetch products for seller
     const products = await prisma.product.findMany({

@@ -22,7 +22,7 @@ export default async function AdminOrdersPage() {
     orderBy: { createdAt: "desc" }
   })
 
-  // Consistent status layout matching the customer dashboard view
+  // Consistent status layout matching the customer dashboard <view></view>
   const getStatusStyles = (status: string) => {
     switch (status) {
       case "PENDING":

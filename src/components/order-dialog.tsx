@@ -71,6 +71,7 @@ export function OrderDialog({ product }: { product: SafeProduct }) {
     }
   }
 
+  return (
     <>
       <Button 
         onClick={() => setOpen(true)}

@@ -13,7 +13,9 @@ export default async function DashboardPage() {
     redirect("/login")
   }
   
-  if (session.user.role === "ADMIN") {
+  const role = (session.user as { role: string }).role
+  
+  if (role === "ADMIN") {
     const productsCount = await prisma.product.count()
     const ordersCount = await prisma.order.count()
     

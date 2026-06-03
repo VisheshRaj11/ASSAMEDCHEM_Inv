@@ -16,7 +16,7 @@ export default async function DashboardLayout({
     redirect("/login")
   }
   
-  const role = session.user.role
+  const role = (session.user as { role: string }).role
 
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50/60 antialiased selection:bg-zinc-200">

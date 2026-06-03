@@ -71,14 +71,14 @@ export function OrderDialog({ product }: { product: SafeProduct }) {
     }
   }
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="w-full h-9 bg-zinc-900 text-zinc-50 text-sm font-medium hover:bg-zinc-800 active:scale-[0.99] transition-all shadow-sm rounded-md">
-          Order Now
-        </Button>
-      </DialogTrigger>
-      
+    <>
+      <Button 
+        onClick={() => setOpen(true)}
+        className="w-full h-9 bg-zinc-900 text-zinc-50 text-sm font-medium hover:bg-zinc-800 active:scale-[0.99] transition-all shadow-sm rounded-md"
+      >
+        Order Now
+      </Button>
+      <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[400px] gap-0 rounded-xl border border-zinc-200 bg-white p-0 shadow-lg overflow-hidden">
         {/* Modal Header Area */}
         <div className="p-6 pb-4 border-b border-zinc-100">
@@ -166,5 +166,6 @@ export function OrderDialog({ product }: { product: SafeProduct }) {
         </div>
       </DialogContent>
     </Dialog>
+    </>
   )
 }
